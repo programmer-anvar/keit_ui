@@ -1,0 +1,35 @@
+.errorContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    padding: 20px;
+}
+
+.errorContent {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.extraInfo {
+    text-align: center;
+    margin-top: 24px;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .errorContainer {
+        padding: 16px;
+    }
+
+    .errorContent {
+        padding: 24px;
+    }
+
+    .extraInfo {
+        margin-top: 16px;
+    }
+}

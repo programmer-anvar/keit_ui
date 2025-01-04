@@ -1,0 +1,1 @@
+export { initTableParams } from "./TableParams";

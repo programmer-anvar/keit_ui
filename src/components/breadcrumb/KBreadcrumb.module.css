@@ -1,0 +1,17 @@
+.breadcrumbContainer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.bookmarkButton {
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.bookmarkButton:hover {
+    transform: scale(1.1);
+}

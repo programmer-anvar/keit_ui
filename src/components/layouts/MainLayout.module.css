@@ -1,0 +1,31 @@
+.fixedSider {
+    position: fixed; /* Fixes the sidebar position */
+    height: 100vh; /* Full height */
+    overflow: auto; /* Allows scrolling if content overflows */
+}
+
+.fixedHeader {
+    position: fixed; /* Fixes the header position */
+    top: 0; /* Aligns it to the top */
+    left: 0; /* Aligns it to the left */
+    right: 0; /* Aligns it to the right */
+    z-index: 1000; /* Ensures it is above other content */
+}
+
+.fixedFooter {
+    position: fixed; /* Fixes the footer position */
+    bottom: 0; /* Aligns it to the bottom */
+    left: 0; /* Aligns it to the left */
+    right: 0; /* Aligns it to the right */
+    z-index: 1000; /* Ensures it is above other content */
+}
+
+.content {
+    margin-top: 64px; /* Adjust based on the height of the header */
+    margin-bottom: 50px; /* Adjust based on the height of the footer */
+    height: calc(100vh - 114px); /* Full height minus header and footer heights */
+    /* position: fixed; */
+    right: 0;
+    width: calc(100vw - 264px);
+    overflow-y: auto; /* Allows scrolling for content */
+}

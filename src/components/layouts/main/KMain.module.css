@@ -1,0 +1,65 @@
+.mainContent {
+    padding: 10px;
+    background: #E9ECF4;
+    height: calc(100vh - 64px - 69px);
+    overflow: auto;
+    width: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+    scrollbar-gutter: stable;
+}
+
+.contentWrapper {
+    padding: 10px;
+    background: #fff;
+    border-radius: 8px;
+    min-height: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+}
+
+.skeletonCard {
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.skeletonCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.loadingContainer {
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Custom scrollbar for webkit browsers */
+.mainContent::-webkit-scrollbar {
+    width: 8px;
+}
+
+.mainContent::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.mainContent::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.mainContent::-webkit-scrollbar-thumb:hover {
+    background: #666;
+}

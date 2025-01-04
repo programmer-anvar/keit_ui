@@ -1,0 +1,51 @@
+.tableWrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tableWrapper :global(.ant-table-cell) {
+    padding: 4px !important;
+}
+
+.centerAlign {
+    text-align: center;
+}
+
+.tableInput {
+    border-radius: 0;
+    text-align: right;
+}
+
+.tableInput:focus {
+    box-shadow: none;
+    border-color: #4096ff;
+}
+
+.headerCell {
+    background-color: #fafafa;
+    font-weight: 500;
+    padding: 8px 4px !important;
+}
+
+.headerCell :global(.ant-table-cell) {
+    text-align: center;
+}
+
+.matrixTable :global(.ant-table-thead > tr > th) {
+    padding: 8px 4px !important;
+    background-color: #fafafa;
+}
+
+.matrixTable :global(.ant-input) {
+    text-align: center;
+    border-radius: 0;
+}
+
+.matrixTable :global(.ant-input:focus) {
+    box-shadow: none;
+    border-color: #4096ff;
+}
+
+.matrixTable :global(.ant-table-cell) {
+    padding: 0 !important;
+}
