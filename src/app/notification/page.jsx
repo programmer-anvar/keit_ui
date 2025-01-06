@@ -6,14 +6,6 @@ import KTable from "@/components/table/KTable";
 import useKNotification from "@/hooks/useKNotification";
 import { NotificationService } from "@/services/notificationController";
 import NotificationModal from "@/components/modals/NotificationModal";
-import { 
-    setDataSource, 
-    setTableHeaders, 
-    setCreateTableHeaders, 
-    setPaginate, 
-    setLoading 
-} from "@/redux/features/samplingSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
 
 const PageNotification = () => {
@@ -39,11 +31,27 @@ const PageNotification = () => {
             setLoading(true);
             const response = await NotificationService.get();
             if (response.success) { 
-                setNotifications(response.data || []);
-                setPaginate(prev => ({
-                    ...prev,
-                    totalElements: response.data.length
-                }));
+                if (Array.isArray(response.data)) {
+         
+                    setNotifications(response?.data || []);
+                    console.log(response?.data);
+                    // const mark = response?.data.isRead
+                    // console.log(mark);
+                    
+                    
+                    setPaginate(prev => ({
+                        ...prev,
+                        totalElements: response.data.length
+                    }));
+                } else {
+                    setNotifications([]);
+                    setPaginate(prev => ({
+                        ...prev,
+                        totalElements: 0
+                    }));
+                }
+                
+
             } else {
                 setError("Failed to load notifications");
             }
@@ -58,6 +66,7 @@ const PageNotification = () => {
     useEffect(() => {
         fetchNotifications();
     }, []);
+    
     const columns = [
     {
         title: "Title", 
@@ -65,7 +74,7 @@ const PageNotification = () => {
         key: "title", 
         width: "300px", 
         render: (title, record) => (
-            <a onClick={() => handleTitleClick(record.id)}>{title}</a>
+            <a onClick={() => handleTitleClick(record.id)} style={{ fontWeight: !record.isRead ? "700" : "400" }}>{title}</a>
         ) 
     },
     { title: "Text",
@@ -103,7 +112,6 @@ const PageNotification = () => {
         const handleTitleClick = (id) => {
             router.push(`/notification/${id}`); 
         };
-        console.log(notifications);
         
 
     return (

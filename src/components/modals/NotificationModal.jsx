@@ -63,9 +63,10 @@ const NotificationModal = ({ visible, onCancel }) => {
             const responseSelect = await NotificationService.getSelectedUser(pageSize);
             if (responseSelect.success) {
                 const users = responseSelect.data.documentLines.map(user => ({
-                    label: user.firstName,
-                    value: user.id
+                    label: user.username,
+                    value: user.id,
                 }));
+                
                 setUserOptions(users);
                 setAllUserIds(users.map(user => user.value));
             }
@@ -78,6 +79,7 @@ const NotificationModal = ({ visible, onCancel }) => {
     useEffect(() => {
         handleSelectUser();
     }, []);
+
     return (
         <Modal
             open={visible}

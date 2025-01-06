@@ -11,7 +11,6 @@ dayjs.locale('ko');
 import "./globals.css";
 import { useEffect, useState } from "react";
 import PagesService from "@/services/pageController";
-
 import { initializeApp } from "firebase/app";
 import {
   getMessaging,
@@ -30,90 +29,70 @@ const firebaseConfig = {
   appId: "1:312290135090:web:d217e82b49572aa543002b",
   measurementId: "G-PPN24PGKVD"
 };
-
-
-
 const VAPID_KEY = "BI8_M7j63XQsOPJXxWCPnybErfQrQxW2CiAxvw7saMFHXD2055sp3ij6ugjtYfURhOxzUiMrkub1JCbQVLHHiWE";
-
 const NotificationToast = ({ notifications, removeNotification }) => {
+    const loadingImg = "https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg"
+    
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: "20px",
-        right: "20px",
-        zIndex: 1000,
-      }}
-    >
-      {notifications.map((notification) => (
-        <div
-        onClick={() => window.location.href='/notification'}
-          key={notification.id}
-          style={{
-            backgroundColor: "#fefefe",
-            border: "1px solid #ddd",
-            borderRadius: "10px",
-            padding: "15px",
-            marginBottom: "10px",
-            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-            maxWidth: "320px",
-            animation: "fadeIn 0.3s ease",
-            position: "relative",
-            display: "flex",
-            alignItems: "flex-start",
-            gap: "10px",
-          }}
-        >
-          <div className="notificationModal">
-          {notification.image && (
-            <img
-              src={notification.image}
-              alt="Notification"
-              
-            />
-          )}
-          <div className="not--desc">
-            <div style={{display:'flex', alignItems:"center", justifyContent:"space-between"}}>
-              <h4>{notification.title}</h4>
-              <button
-            onClick={(e) => {
-              e.stopPropagation()
-              removeNotification(notification.id)}}
-            style={{
-              // position: "absolute",
-              // zIndex:'100',
-              // top: "20px",
-              // right: "25px",
-              background: "none",
-              border: "none",
-              color: "black",
-              fontSize: "22px",
-              cursor: "pointer",
-            }}
-          >
-            ×
-          </button>
-            </div>
-            <div >
-              <p>{notification.body}</p>
-            </div>
-            <div
-              style={{
-                fontSize: "0.8em",
-                color: "#888",
-                marginTop: "10px",
-                textAlign: "right",
-              }}
-            >
-              {/* {notification.timestamp} */}
-              <button className="isReadBtn">is read</button>
-            </div>
-          </div>
-          </div>
-          
-        </div>
-      ))}
-    </div>
+      <div style={{ position: "fixed", bottom: "20px", right: "20px", zIndex: 1000 }}>
+          {notifications.map((notification) => (
+              <div
+                  onClick={() => window.location.href='/notification'}
+                  key={notification.id}
+                  style={{
+                      backgroundColor: "#fefefe",
+                      border: "1px solid #ddd",
+                      borderRadius: "10px",
+                      padding: "15px",
+                      marginBottom: "10px",
+                      boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                      maxWidth: "320px",
+                      animation: "fadeIn 0.3s ease",
+                      position: "relative",
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: "10px",
+                  }}
+              >
+                  <div className="notificationModal">
+                      {notification.imgUrl && (
+                          <img src={notification.imgUrl || loadingImg} alt="Notification" />
+                      )}
+                      <div className="not--desc">
+                          <div style={{ display: 'flex', alignItems: "center", justifyContent: "space-between", maxWidth: '300px', width: '100%' }}>
+                              <h4>{notification.title}</h4>
+                              <button
+                                  onClick={(e) => {
+                                      e.stopPropagation();
+                                      removeNotification(notification.id);
+                                  }}
+                                  style={{
+                                      background: "none",
+                                      border: "none",
+                                      color: "black",
+                                      fontSize: "22px",
+                                      cursor: "pointer",
+                                  }}
+                              >
+                                  ×
+                              </button>
+                          </div>
+                          <div>
+                              <p>{notification.description}</p> {/* Changed to 'description' */}
+                          </div>
+                          <div style={{
+                              fontSize: "0.8em",
+                              color: "#888",
+                              marginTop: "10px",
+                              textAlign: "right",
+                          }}>
+                              <span>{notification.createdAt}</span> {/* Displaying the new timestamp */}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          ))}
+      </div>
   );
 };
 const theme = {
@@ -156,24 +135,7 @@ export default function RootLayout({ children }) {
       const [firebaseInitialized, setFirebaseInitialized] = useState(false);
       const [messagingSupported, setMessagingSupported] = useState(true);
       const [notifications, setNotifications] = useState([]);
-
-    //  const fetNotificationId = async () =>{
-    //   try{
-    //     const response = await NotificationService.get();
-    //     if(response.success){
-    //       setNotifications(response.data || [])
-          
-    //     }
-    //     console.log(response);
-        
-    //   }catch(err){
-    //     console.log(err);
-    //   }
-    //  }
-
-    //  useEffect(() =>{
-    //   fetNotificationId()
-    //  },[])
+      
     
       const removeNotification = (id) => {
         setNotifications((prev) => prev.filter((notification) => notification.id !== id));
@@ -189,30 +151,37 @@ export default function RootLayout({ children }) {
               const app = initializeApp(firebaseConfig);
               const messaging = getMessaging(app);
               const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+              console.log(messaging,'gggg');
+              
               console.log("FCM Token:", token);
               if (token) {
                 localStorage.setItem("fcmToken", token);
               }
               onMessage(messaging, (payload) => {
-                console.log("Message received:", payload);
-                const { title, body, image } = payload.notification || {};
-                setNotifications((prev) => [
-                  ...prev,
-                  {
-                    id: Date.now(),
-                    title: title || "No Title",
-                    body: body || "No Body",
-                    image: image || null,
-                    timestamp: new Date().toLocaleString(),
-                  },
-                ]);
-              });
+                console.log("Message received:", payload.data.message);
+                const { title, messageBody, imageUrl } = JSON.parse(payload.data.message) || {};
+                console.log(title, messageBody, imageUrl)
+            
+                if (title && messageBody) { 
+                    const newNotification = {
+                        id: Date.now(),
+                        title: title,
+                        description: messageBody, 
+                        imgUrl: imageUrl || null,
+                        createdAt: new Date().toISOString(), 
+                    };
+                    setNotifications((prev) => [...prev, newNotification]);
+                    setTimeout(() => {
+                        removeNotification(newNotification.id);
+                    }, 6000); 
+                    
+                }
+            });
             }
           } catch (error) {
             console.error("Firebase initialization error:", error);
           }
         };
-    
         initializeFirebaseApp();
       }, []);
 
