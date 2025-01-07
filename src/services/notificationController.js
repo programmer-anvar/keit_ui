@@ -7,8 +7,14 @@ export const NotificationService = {
     },
     getSelectedUser: async (requstBody) => {
         return await createItem(`/v1/user/all`,requstBody
-            
         );
+    },
+    markRead: async (id) => {
+        return await createItem(`/lab/v1/messages/${id}/mark-read`,
+        );
+    },
+    searchMessage: async (query) => {
+            return await fetchData(`/lab/v1/messages/search?query=${query}`);
     },
     getById: async (id) => {
         return await fetchData(`/lab/v1/messages/${id}`);

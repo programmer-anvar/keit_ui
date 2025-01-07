@@ -56,7 +56,9 @@ const NotificationToast = ({ notifications, removeNotification }) => {
               >
                   <div className="notificationModal">
                       {notification.imgUrl && (
-                          <img src={notification.imgUrl || loadingImg} alt="Notification" />
+                          <div style={{width:'200px'}}>
+                            <img src={notification.imgUrl || loadingImg} alt="Notification" />
+                          </div>
                       )}
                       <div className="not--desc">
                           <div style={{ display: 'flex', alignItems: "center", justifyContent: "space-between", maxWidth: '300px', width: '100%' }}>

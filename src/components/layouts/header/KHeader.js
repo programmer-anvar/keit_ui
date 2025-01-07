@@ -14,6 +14,7 @@ import SelectService from "@/components/SelectService";
 import logo from "../../../../public/assets/logo-01-u.png";
 import { setItem } from "@/utils/persistance-storage";
 import { logout } from "@/services/authController";
+import { NotificationService } from "@/services/notificationController";
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -87,6 +88,30 @@ const KHeader = ({
         router.push("/login");
     };
 
+    const [notificationLength, setNotificationLength] = useState([]);
+const [error, setError] = useState(null);
+
+const getNotification = async () => {
+    try {
+        const response = await NotificationService.get();
+        if (response?.success && Array.isArray(response?.data)) {
+            const unreadNotifications = response.data.filter((item) => item?.isRead === false);
+            console.log(unreadNotifications);
+            
+            setNotificationLength(unreadNotifications.length); 
+        } else {
+            setError("Failed to load notifications");
+        }
+    } catch (error) {
+        console.error("Error fetching notifications:", error);
+        setError("An error occurred while fetching notifications");
+    }
+};
+
+useEffect(() => {
+    getNotification();
+}, []);
+
     return (
         <div className={styles.header}>
             <Header className={styles.headerInner} style={{ paddingLeft: 0 }}>
@@ -116,8 +141,10 @@ const KHeader = ({
                         className={styles.select}
                         onChange={setProcessId}
                     />
-                    <Badge count={1}><MailOutlined className={styles.icon} /></Badge>
-                    <Badge count={1}><BellOutlined className={styles.icon} /></Badge>
+                    {/* <Badge count={1}><MailOutlined className={styles.icon} /></Badge> */}
+                    <Link href={'/notification'}>
+                    <Badge count={notificationLength}><BellOutlined className={styles.icon} /></Badge>
+                    </Link>
                     <Button onClick={handleLogout} icon={<UserOutlined />} type="text">Logout</Button>
                 </Space>
             </Header>

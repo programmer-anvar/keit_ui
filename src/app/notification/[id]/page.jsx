@@ -11,6 +11,23 @@ const NotificationDetail = () => {
     const [notification, setNotification] = useState(null);
     const [loading, setLoading] = useState(true);
     const [imageLoading,setImageLoading] = useState(true);
+    console.log(id);
+    
+
+  const MarkReadFun = async () =>{
+    try{
+       const response = await NotificationService.markRead(id);
+       if (response.success) {
+        console.log("Notification sent successfully!");
+    }
+    }catch(err){
+      console.log(err);
+      
+    }
+  }
+  useEffect(() =>{
+    MarkReadFun()
+  },[])
 
 
     useEffect(() => {
@@ -23,7 +40,6 @@ const NotificationDetail = () => {
                           setNotification(response.data);
                         }else(setNotification([]))
                         console.log(response.data);
-                        
                     }
                 } catch (error) {
                     console.error("Error fetching notification details", error);
@@ -37,6 +53,7 @@ const NotificationDetail = () => {
     }, [id]);
 
     if (loading) return <div>Loading...</div>;
+
 
     return (
         <div>
@@ -82,8 +99,8 @@ const NotificationDetail = () => {
                       objectFit: "cover",
                       display: imageLoading ? 'none' : 'block'
                   }}
-                  onLoad={() => setImageLoading(false)} // Rasim muvaffaqiyatli yuklanganda
-                  onError={() => setImageLoading(false)} // Rasim yuklashda xato bo'lganda
+                  onLoad={() => setImageLoading(false)} 
+                  onError={() => setImageLoading(false)} 
               />
           </div>
       }
@@ -94,10 +111,15 @@ const NotificationDetail = () => {
           description={
             <>
               <Paragraph style={{ fontSize: '16px', lineHeight: '1.6' }}>{notification?.text}</Paragraph>
-              <div style={{ marginTop: '10px',display:'flex',gap:"10px" }}>
-                <Paragraph strong style={{ fontSize: '14px', color: '#595959' }}>Schedule:</Paragraph>
+              <div style={{ marginTop: '5px',display:'flex',gap:"10px" }}>
+                <Paragraph strong style={{ fontSize: '14px', color: '#595959' }}>Time:</Paragraph>
                 <Paragraph style={{ fontSize: '14px', color: '#333' }}>{notification?.sentTime}</Paragraph>
               </div>
+              <div style={{ marginTop: '5px',display:'flex',gap:"10px" }}>
+                <Paragraph strong style={{ fontSize: '14px', color: '#595959' }}>Read At:</Paragraph>
+                <Paragraph style={{ fontSize: '14px', color: '#333' }}>{notification?.readAt}</Paragraph>
+              </div>
+              
             </>
           }
         />

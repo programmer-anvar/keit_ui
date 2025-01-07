@@ -23,9 +23,11 @@ const NotificationModal = ({ visible, onCancel }) => {
         form.setFieldsValue({ upload: fileList });
     };
     const handleSubmit = async () => {
+        window.location.reload(false)
         try {
             const values = await form.validateFields();
             const requestData = new FormData();
+
     
             requestData.append("title", values.title);
             requestData.append("text", values.description);
