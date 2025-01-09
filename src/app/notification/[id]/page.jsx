@@ -117,7 +117,7 @@ const NotificationDetail = () => {
               </div>
               <div style={{ marginTop: '5px',display:'flex',gap:"10px" }}>
                 <Paragraph strong style={{ fontSize: '14px', color: '#595959' }}>Read At:</Paragraph>
-                <Paragraph style={{ fontSize: '14px', color: '#333' }}>{notification?.readAt}</Paragraph>
+                <Paragraph style={{ fontSize: '14px', color: '#333' }}>{notification?.readAt || 'just now'}</Paragraph>
               </div>
               
             </>

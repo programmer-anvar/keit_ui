@@ -73,7 +73,7 @@ const SamplingPage = () => {
                 }
             }
             
-            const dataResponse = await SamplingController.getValues(getValues);
+            const dataResponse = await SamplingController?.getValues(getValues);
             if (dataResponse.success) {
                 // Group data by oneObject (row identifier)
                 const groupedByOneObject = dataResponse.data.responseList.reduce((acc, item) => {

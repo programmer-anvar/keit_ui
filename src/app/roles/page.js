@@ -22,7 +22,12 @@ const RoleAndPermissionsPage = () => {
         try {
             setLoading(true);
             const rolesData = await fetchRoles();
-            setRoles(rolesData);
+            if (rolesData.success) {
+                if (Array.isArray(rolesData.data)) {
+                    setRoles(rolesData?.data || []);
+              }
+            }
+            // setRoles(rolesData);
         } catch (err) {
             setError(err.message || "An error occurred while fetching data");
         } finally {
@@ -39,6 +44,7 @@ const RoleAndPermissionsPage = () => {
             
             const newRole = { ...newRoleData, organizationId: orgId };
             const response = await createRole(newRole);
+            
             if (response.error) {
                 // message.error(response.message);
             } else {

@@ -26,7 +26,10 @@ const PageNotification = () => {
       setLoading(true);
       const response = await NotificationService.get(); 
       if (response.success) {
-        setNotifications(response?.data || []);
+        if (Array.isArray(response.data)) {
+          setNotifications(response?.data || []);
+      }
+        // setNotifications(response?.data || []);
         setPaginate((prev) => ({
           ...prev,
           totalElements: response.data.length,
@@ -55,7 +58,8 @@ const PageNotification = () => {
             <a
               onClick={() => handleTitleClick(record.id)}
             >
-              {isRead === true ? <FolderOpenOutlined /> : <MailOutlined />}
+              
+              {isRead === true ? <FolderOpenOutlined style={{color:'green'}} /> : <MailOutlined style={{color:'red'}}/>}
             </a>
           ),
       },
@@ -66,7 +70,7 @@ const PageNotification = () => {
       width: "300px",
       render: (title, record) => (
         <a
-          onClick={() => handleTitleClick(record.id)}
+          onClick={() => handleTitleClick(record.id)} 
         >
           {title}
         </a>
@@ -124,6 +128,9 @@ const PageNotification = () => {
     }
   };
 
+  const getRowClassName = (record) => {
+    return record.isRead === false ? 'row-black' : '';
+  };
   return (
     <Space
       direction="vertical"
@@ -158,6 +165,7 @@ const PageNotification = () => {
           tableParams={paginate}
           onTableChange={handleTableChange}
           isSampling={true}
+          rowClassName={getRowClassName} 
         />
         <NotificationModal
           visible={modalVisible}

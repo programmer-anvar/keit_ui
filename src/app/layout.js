@@ -145,68 +145,72 @@ export default function RootLayout({ children }) {
     
       useEffect(() => {
         const initializeFirebaseApp = async () => {
-          try {
-            const messagingSupported = await isSupported();
-            setMessagingSupported(messagingSupported);
+            try {
+                const messagingSupported = await isSupported();
+                setMessagingSupported(messagingSupported);
     
-            if (messagingSupported) {
-              const app = initializeApp(firebaseConfig);
-              const messaging = getMessaging(app);
-              const token = await getToken(messaging, { vapidKey: VAPID_KEY });
-              console.log(messaging,'gggg');
-              
-              console.log("FCM Token:", token);
-              if (token) {
-                localStorage.setItem("fcmToken", token);
-              }
-              onMessage(messaging, (payload) => {
-                console.log("Message received:", payload.data.message);
-                const { title, messageBody, imageUrl } = JSON.parse(payload.data.message) || {};
-                console.log(title, messageBody, imageUrl)
-            
-                if (title && messageBody) { 
-                    const newNotification = {
-                        id: Date.now(),
-                        title: title,
-                        description: messageBody, 
-                        imgUrl: imageUrl || null,
-                        createdAt: new Date().toISOString(), 
-                    };
-                    setNotifications((prev) => [...prev, newNotification]);
-                    setTimeout(() => {
-                        removeNotification(newNotification.id);
-                    }, 6000); 
+                if (messagingSupported) {
+                    const app = initializeApp(firebaseConfig);
+                    const messaging = getMessaging(app);
+                    const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+                    console.log("FCM Token:", token);
+                    if (token) {
+                        localStorage.setItem("fcmToken", token);
+                    }
+    
+                    onMessage(messaging, (payload) => {
+                        console.log("Message received:", payload.data.message);
+                        const { title, messageBody, imageUrl } = JSON.parse(payload.data.message) || {};
                     
+                        if (title || messageBody || imageUrl) {
+                            const newNotification = {
+                                id: Date.now(),
+                                title: title,
+                                description: messageBody,
+                                imgUrl: imageUrl || null,
+                                createdAt: new Date().toISOString(),
+                            };
+                            if (Notification.permission === 'granted') {
+                                new Notification(title, {
+                                    body: messageBody,
+                                    icon: imageUrl || '/images/icon.png',
+                                });
+                            }
+                    
+                            setNotifications((prev) => [...prev, newNotification]);
+                            setTimeout(() => {
+                                removeNotification(newNotification.id);
+                            }, 6000);
+                        }
+                    });
                 }
-            });
+            } catch (error) {
+                console.error("Firebase initialization error:", error);
             }
-          } catch (error) {
-            console.error("Firebase initialization error:", error);
-          }
         };
         initializeFirebaseApp();
-      }, []);
+    }, []);
 
-    const handleSendData = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const userDeviceData = await getUserDeviceData();
-            const apiResponse = await sendDataToAPI(userDeviceData);
-            setResponse(apiResponse);
-            console.log(userDeviceData);
+    // const handleSendData = async () => {
+    //     setLoading(true);
+    //     setError(null);
+    //     try {
+    //         const userDeviceData = await getUserDeviceData();
+    //         const apiResponse = await sendDataToAPI(userDeviceData);
+    //         setResponse(apiResponse);
+    //         console.log(userDeviceData);
             
-        } catch (err) {
-            setError("Xatolik yuz berdi! Iltimos, qayta urinib ko'ring.");
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
+    //     } catch (err) {
+    //         setError("Xatolik yuz berdi! Iltimos, qayta urinib ko'ring.");
+    //         console.error(err);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
-    useEffect(() =>{
-        handleSendData()
-    },[])
+    // useEffect(() =>{
+    //     handleSendData()
+    // },[])
     
     const pageTypes = {
         auth: ['/login'],

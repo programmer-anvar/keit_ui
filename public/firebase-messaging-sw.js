@@ -61,21 +61,18 @@ self.addEventListener('push', (event) => {
   );
 });
 
-// Handle notification click
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
 
   event.waitUntil(
     self.clients.matchAll().then((clientList) => {
-      // If a Window tab matching the targeted URL already exists, focus that
       for (const client of clientList) {
         if (client.url === '/' && 'focus' in client) {
           return client.focus();
         }
       }
 
-      // Otherwise, open a new window
-      return self.clients.openWindow('/');
+      return self.clients.openWindow('/notification');
     })
   );
 });

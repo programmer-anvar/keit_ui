@@ -1,10 +1,10 @@
 import { createItem, editItem, fetchData, removeItem } from "@/utils/requestHelper";
 
 const configController = {
-    fetchAllTableHeaders: async (resourceKey) => {
-        const response = await fetchData(`/lab/v1/${resourceKey}/table-headers`);
-        return response;
-    },
+    // fetchAllTableHeaders: async (resourceKey) => {
+    //     const response = await fetchData(`/lab/v1/${resourceKey}/table-headers`);
+    //     return response;
+    // },
 
     getColumnById: async (resourceKey, id) => {
         const response = await fetchData(`/lab/v1/${resourceKey}/get-define-id/${id}`);

@@ -124,3 +124,8 @@ a {
   color: white;
   font-size: 14px;
 }
+
+.row-black{
+  background-color: #1717170e;
+  width: 100%;
+}

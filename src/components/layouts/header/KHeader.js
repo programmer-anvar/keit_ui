@@ -96,8 +96,6 @@ const getNotification = async () => {
         const response = await NotificationService.get();
         if (response?.success && Array.isArray(response?.data)) {
             const unreadNotifications = response.data.filter((item) => item?.isRead === false);
-            console.log(unreadNotifications);
-            
             setNotificationLength(unreadNotifications.length); 
         } else {
             setError("Failed to load notifications");
